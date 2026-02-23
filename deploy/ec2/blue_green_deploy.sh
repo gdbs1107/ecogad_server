@@ -5,6 +5,8 @@ APP_NAME="${APP_NAME:-ecogad}"
 DOCKER_REPO="${DOCKER_REPO:?DOCKER_REPO is required}"
 IMAGE_TAG="${IMAGE_TAG:?IMAGE_TAG is required}"
 IMAGE="${DOCKER_REPO}:${IMAGE_TAG}"
+DOCKER_USERNAME="${DOCKER_USERNAME:-}"
+DOCKER_PASSWORD="${DOCKER_PASSWORD:-}"
 
 LOCK_FILE="${LOCK_FILE:-/var/lock/${APP_NAME}-deploy.lock}"
 mkdir -p "$(dirname "${LOCK_FILE}")"
@@ -48,6 +50,11 @@ CURRENT_CONTAINER="${APP_NAME}-${CURRENT_COLOR}"
 HEALTH_URL="http://127.0.0.1:${NEXT_PORT}${HEALTH_PATH}"
 
 echo "[INFO] Current=${CURRENT_COLOR}(${CURRENT_PORT}), Next=${NEXT_COLOR}(${NEXT_PORT})"
+if [[ -n "${DOCKER_USERNAME}" && -n "${DOCKER_PASSWORD}" ]]; then
+  echo "[INFO] Docker registry login"
+  echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin >/dev/null
+fi
+
 echo "[INFO] Pull image: ${IMAGE}"
 docker pull "${IMAGE}"
 
