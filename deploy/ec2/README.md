@@ -40,9 +40,9 @@ sudo systemctl restart nginx
 
 ## 2) GitHub Secrets
 
-- `DOCKER_USERNAME`
-- `DOCKER_PASSWORD`
-- `DOCKER_REPO` (예: `username/ecogad`)
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+- `DOCKERHUB_REPO` (예: `username/ecogad`, Docker Hub 저장소)
 - `EC2_HOST`
 - `EC2_USER` (예: `ubuntu`)
 - `EC2_SSH_KEY`
@@ -64,6 +64,7 @@ spring:
 
 - `main` 브랜치 push 시 CD 실행
 - GitHub Actions가 `APPLICATION_DEV` 시크릿으로 `src/main/resources/application-dev.yml` 생성
+- Docker Hub로 이미지 push (ECR 미사용)
 - Docker 이미지를 `:<commit_sha>`와 `:main-latest`로 push
 - EC2에서 비활성 색상 컨테이너를 먼저 실행 후 `/actuator/health` 헬스체크
 - 통과 시 Nginx upstream을 새 포트로 전환 후 reload

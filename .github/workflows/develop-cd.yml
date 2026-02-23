@@ -59,10 +59,10 @@ jobs:
 
       - name: Jib 이미지 빌드 및 푸시
         env:
-          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+          DOCKER_REPO: ${{ secrets.DOCKERHUB_REPO }}
           IMAGE_SHA: ${{ github.sha }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           ./gradlew jib -x test --no-daemon --build-cache \
             -Djib.from.auth.username="${DOCKER_USERNAME}" \
@@ -91,7 +91,7 @@ jobs:
           script: |
             chmod +x /tmp/deploy/ec2/blue_green_deploy.sh
             export APP_NAME="ecogad"
-            export DOCKER_REPO="${{ secrets.DOCKER_REPO }}"
+            export DOCKER_REPO="${{ secrets.DOCKERHUB_REPO }}"
             export IMAGE_TAG="${{ github.sha }}"
             export SPRING_PROFILES_ACTIVE="dev"
             export HEALTH_PATH="/actuator/health"
